@@ -1,0 +1,45 @@
+def partition(arr, low, high, pivot):
+    i = low
+    for j in range(low, high):
+        if arr[j] == pivot:
+            arr[j], arr[high] = arr[high], arr[j]
+            break
+    pivot = arr[high]
+    for j in range(low, high):
+        if arr[j] <= pivot:
+            arr[i], arr[j] = arr[j], arr[i]
+            i += 1
+    arr[i], arr[high] = arr[high], arr[i]
+    return i
+
+def select(arr, low, high, k):
+    if low == high:
+        return arr[low]
+
+    n = high - low + 1
+    medians = []
+    for i in range(0, n // 5):
+        medians.append(sorted(arr[low + i*5 : low + i*5 + 5])[2])
+    if n % 5:
+        medians.append(sorted(arr[low + (n // 5)*5 : low + (n // 5)*5 + n % 5])[n % 5 // 2])
+    
+    if len(medians) <= 5:
+        pivot = sorted(medians)[len(medians) // 2]
+    else:
+        pivot = select(medians, 0, len(medians) - 1, len(medians) // 2)
+    
+    pivot_index = partition(arr, low, high, pivot)
+
+    if pivot_index - low == k:
+        return arr[pivot_index]
+    elif pivot_index - low > k:
+        return select(arr, low, pivot_index - 1, k)
+    else:
+        return select(arr, pivot_index + 1, high, k - pivot_index + low - 1)
+
+def median_of_medians(arr, k):
+    return select(arr, 0, len(arr) - 1, k)
+
+arr = [12, 3, 5, 7, 4, 19, 26]
+k = 3
+print(f"{k}rd smallest element is", median_of_medians(arr, k))
