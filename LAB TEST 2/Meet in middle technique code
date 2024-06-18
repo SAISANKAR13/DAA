@@ -1,0 +1,36 @@
+def subset_sum(arr, target):
+    # Split the array into two halves
+    n = len(arr)
+    mid = n // 2
+    left_half = arr[:mid]
+    right_half = arr[mid:]
+    
+    # Function to calculate all possible sums of subsets
+    def get_all_sums(arr):
+        sums = []
+        n = len(arr)
+        for i in range(1 << n):
+            subset_sum = 0
+            for j in range(n):
+                if i & (1 << j):
+                    subset_sum += arr[j]
+            sums.append(subset_sum)
+        return sums
+    
+    # Get all possible sums for both halves
+    left_sums = get_all_sums(left_half)
+    right_sums = get_all_sums(right_half)
+    
+    # Create a set for the right sums for faster lookup
+    right_sums_set = set(right_sums)
+    
+    # Check if there is any combination that sums to the target
+    for left_sum in left_sums:
+        if (target - left_sum) in right_sums_set:
+            return True
+    
+    return False
+
+arr = [3, 34, 4, 12, 5, 2]
+target = 9
+print(f"Is there a subset with sum {target}?", subset_sum(arr, target))
