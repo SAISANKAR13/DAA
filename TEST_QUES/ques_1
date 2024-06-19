@@ -1,0 +1,8 @@
+def min_length_after_operations(nums):
+    return len(nums) % 2
+    
+nums = [1, 2, 3, 4]
+print(min_length_after_operations(nums)) 
+
+nums = [1, 2, 3, 4, 5]
+print(min_length_after_operations(nums))
