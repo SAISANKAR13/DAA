@@ -1,0 +1,41 @@
+from typing import List, Optional
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def sortedArrayToBST(nums: List[int]) -> Optional[TreeNode]:
+    def convertToBST(left: int, right: int) -> Optional[TreeNode]:
+        if left > right:
+            return None
+        mid = (left + right) // 2
+        node = TreeNode(nums[mid])
+        node.left = convertToBST(left, mid - 1)
+        node.right = convertToBST(mid + 1, right)
+        return node
+    return convertToBST(0, len(nums) - 1)
+from collections import deque
+
+def print_level_order(root: Optional[TreeNode]):
+    if not root:
+        return []
+    result, queue = [], deque([root])
+    while queue:
+        level = []
+        for _ in range(len(queue)):
+            node = queue.popleft()
+            if node:
+                level.append(node.val)
+                queue.append(node.left)
+                queue.append(node.right)
+            else:
+                level.append(None)
+        result.append(level)
+    return result
+
+# Example usage:
+nums = [-10, -3, 0, 5, 9]
+root = sortedArrayToBST(nums)
+print(print_level_order(root)) 
