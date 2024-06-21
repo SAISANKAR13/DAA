@@ -1,0 +1,16 @@
+def repeatedStringMatch(a, b):
+    min_repeats = (len(b) - 1) // len(a) + 1
+    repeated_a = a * min_repeats
+    if b in repeated_a:
+        return min_repeats
+
+    repeated_a_plus_one = a * (min_repeats + 1)
+    if b in repeated_a_plus_one:
+        return min_repeats + 1
+
+    return -1
+
+a = "abcd"
+b = "cdabcdab"
+print(repeatedStringMatch(a, b))  # Output: 3
+
