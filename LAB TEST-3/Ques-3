@@ -1,0 +1,58 @@
+import heapq
+from typing import List, Tuple
+
+class Node:
+    def __init__(self, char: str, freq: int):
+        self.char = char
+        self.freq = freq
+        self.left = None
+        self.right = None
+    
+    def __lt__(self, other):
+
+        return self.freq < other.freq
+
+def generate_huffman_codes(characters: List[str], frequencies: List[int]) -> List[Tuple[str, str]]:
+    n = len(characters)
+    if n == 0:
+        return []
+
+    nodes = []
+    for i in range(n):
+        nodes.append(Node(characters[i], frequencies[i]))
+   
+    heapq.heapify(nodes) 
+    
+    while len(nodes) > 1:
+     
+        left = heapq.heappop(nodes)
+        right = heapq.heappop(nodes)
+        
+        new_node = Node(None, left.freq + right.freq)
+        new_node.left = left
+        new_node.right = right
+    
+        heapq.heappush(nodes, new_node)
+
+    root = nodes[0]
+
+    huffman_codes = []
+    
+    def traverse(node, code):
+        if node:
+
+            if node.char:
+                huffman_codes.append((node.char, code))
+            else:
+ 
+                traverse(node.left, code + '0')
+                traverse(node.right, code + '1')
+    
+    traverse(root, '')
+    
+    return huffman_codes
+
+n = 4
+characters = ['a', 'b', 'c', 'd']
+frequencies = [5, 9, 12, 13]
+print(generate_huffman_codes(characters, frequencies))
