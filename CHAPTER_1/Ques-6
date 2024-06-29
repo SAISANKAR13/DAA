@@ -1,0 +1,13 @@
+def find_max_in_sorted(nums):
+    if not nums:
+        return None
+    sorted_nums = sorted(nums)
+    return sorted_nums[-1]
+
+test_input = []
+result = find_max_in_sorted(test_input)
+
+if result is None:
+    print("Input list is empty.")
+else:
+    print("Maximum element in the sorted list:", result)
