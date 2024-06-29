@@ -1,0 +1,13 @@
+def rob(nums):
+    def rob_range(nums, start, end):
+        rob1, rob2 = 0, 0
+        for i in range(start, end+1):
+            rob1, rob2 = rob2, max(rob1 + nums[i], rob2)
+        return rob2
+
+    if len(nums) == 1:
+        return nums[0]
+    return max(rob_range(nums, 0, len(nums)-2), rob_range(nums, 1, len(nums)-1))
+
+print(rob([2, 3, 2]))  
+print(rob([1, 2, 3, 1]))  
