@@ -1,0 +1,28 @@
+def gameOfLife(board):
+    def count_live_neighbors(board, i, j):
+        live_count = 0
+        directions = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+        for dx, dy in directions:
+            ni, nj = i + dx, j + dy
+            if 0 <= ni < len(board) and 0 <= nj < len(board[0]) and board[ni][nj] in (1, -1):
+                live_count += 1
+        return live_count
+    
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            live_neighbors = count_live_neighbors(board, i, j)
+            if board[i][j] == 1 and (live_neighbors < 2 or live_neighbors > 3):
+                board[i][j] = -1
+            if board[i][j] == 0 and live_neighbors == 3:
+                board[i][j] = 2
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            if board[i][j] == -1:
+                board[i][j] = 0
+            elif board[i][j] == 2:
+                board[i][j] = 1
+    
+    return board
+
+input_board = [[0,1,0],[0,0,1],[1,1,1],[0,0,0]]
+print(gameOfLife(input_board))  # Output: [[0,0,0],[1,0,1],[0,1,1],[0,1,0]]
